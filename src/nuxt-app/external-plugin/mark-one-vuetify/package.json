@@ -1,0 +1,19 @@
+{
+  "name": "mark-one-vuetify",
+  "version": "1.0.0",
+  "description": "",
+  "main": "MarkOneVuetify.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DeividFrancis/mark-one-vuetify.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DeividFrancis/mark-one-vuetify/issues"
+  },
+  "homepage": "https://github.com/DeividFrancis/mark-one-vuetify#readme"
+}

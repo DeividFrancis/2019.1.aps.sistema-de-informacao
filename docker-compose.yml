@@ -1,0 +1,66 @@
+version: '3'
+services:
+  # The Api
+  api:
+    build:
+      context: docker
+      dockerfile: php.dockerfile
+    container_name: aps-api
+    working_dir: /var/www/api
+    volumes:
+      - ./src/api:/var/www/api
+    env_file:
+      - ./src/.env
+    networks:
+      - frontend
+      - database
+    depends_on: 
+      - db
+  app:
+    build:
+      context: .
+      dockerfile: docker/vue.dockerfile
+    container_name: aps-nuxt-app
+    working_dir: /var/www/nuxt-app
+    volumes:
+      - ./src/nuxt-app:/var/www/nuxt-app
+      - ./src/web/hosts:/etc/hosts
+    networks:
+      - frontend
+  # The Web Server
+  web: 
+    image: nginx
+    container_name: aps-web
+    volumes:
+      - ./src/web/nginx.conf:/etc/nginx/nginx.conf
+      - ./src/web/api.conf:/etc/nginx/conf.d/default.conf
+      - ./src/web/nuxtapp.conf:/etc/nginx/conf.d/nuxtapp.conf
+      - ./src/api:/var/www/api
+    ports:
+      - 80:80
+    networks:
+      - frontend
+
+  # The Database
+  db:
+    image: postgres:9.5-alpine
+    container_name: aps-db
+    volumes:
+        - "dbdata:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - database
+
+volumes:
+  dbdata:
+
+networks:
+    frontend:
+      driver: bridge
+    database:
+      driver: bridge
